@@ -34,8 +34,6 @@ var sCalc = function(targ, v, f, c, r, logger) {
 		if (inputObj) {
 			if (inputObj.inpDef && inputObj.inpDef.inpType === "text") {
 				this.v[inputObj.inpDef.map] = inputObj.value;
-
-				this.calculate();
 			} else {
 				if ( isNaN(inputObj.value) ) {
 					inputObj.value = this.v[inputObj.inpDef.map];
@@ -43,9 +41,9 @@ var sCalc = function(targ, v, f, c, r, logger) {
 				else {
 					this.v[inputObj.inpDef.map] = parseInt(inputObj.value,10);
 				}
-				this.calculate();
 			}
 		}
+		this.calculate();
 		this.updateReport();
 		this.log("FINISH sCalc.prototype.update = function(inputObj)");
 	}

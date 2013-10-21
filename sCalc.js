@@ -1,5 +1,6 @@
-var sCalc = function(targ, v, f, c, r, logger) {
+var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 	this.displayBox = document.getElementById(targ);
+	this.sCalcId = sCalcId;
 	this.elems = {};
 
 	this.variables = v;
@@ -9,7 +10,11 @@ var sCalc = function(targ, v, f, c, r, logger) {
 
 	this.reportFields = {};
 
-
+	if ( userPrefs && userPrefs.saveData) {
+		this.userPrefs = userPrefs;
+	} else {
+		this.userPrefs = new sCalcPrefs("spellCalcDefault");
+	}
 	this.logger = logger;
 	this.initialize();
 
@@ -30,7 +35,7 @@ var sCalc = function(targ, v, f, c, r, logger) {
 
 
 	sCalc.prototype.update = function(inputObj) {
-		this.log ("CALL sCalc.prototype.update = function(inputObj)");
+		this.log ("CALL sCalc.prototype.update = function(inputObj, inpDef)");
 		if (inputObj) {
 			if (inputObj.inpDef && inputObj.inpDef.inpType === "text") {
 				this.v[inputObj.inpDef.map] = inputObj.value;
@@ -45,9 +50,23 @@ var sCalc = function(targ, v, f, c, r, logger) {
 		}
 		this.calculate();
 		this.updateReport();
-		this.log("FINISH sCalc.prototype.update = function(inputObj)");
+		this.log("FINISH sCalc.prototype.update = function(inputObj, inpDef)");
 	}
 
+	sCalc.prototype.updateUserPrefs = function(inpObj, inpDef) {
+		this.log ("CALL sCalc.prototype.updateUserPrefs = function(inpObj, inpDef)");
+
+		if (this.userPrefs.spellKeys[this.sCalcId] && usefulTypeOf(this.userPrefs.spellKeys[this.sCalcId]) === "[object Object]") {
+			this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = inpObj.value;
+			this.userPrefs.saveData();
+		} else {
+			this.userPrefs.spellKeys[this.sCalcId] = {};
+			this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = inpObj.value;
+			this.userPrefs.saveData();
+		}
+
+		this.log("FINISH sCalc.prototype.updateUserPrefs = function(inpObj, inpDef)");
+	}
 
 	sCalc.prototype.updateReport = function(inputObj) {
 		for (var k in this.reportFields) {
@@ -115,7 +134,7 @@ var sCalc = function(targ, v, f, c, r, logger) {
 			inp = createSuperElement("input", 
 				["size",2], ["maxlength",4], 
 				["value", (this.v[cellDef.map]) ? this.v[cellDef.map] : 0 ],
-				["onchange", "this.SCobj.update(this);"]);
+				["onchange", "this.SCobj.update(this); this.SCobj.updateUserPrefs(this, inpDef);"]);
 			inp.inpDef = cellDef;
 			inp.SCobj = this;
 			appendChildren(tdI,inp);

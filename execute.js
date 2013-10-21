@@ -9,6 +9,10 @@ function updateDebugBox() {
 var Manager = {};
 Manager.devStack = new Array();
 
+var objCounter = 0;
+
+var sCalcUserData = new sCalcPrefs("kantiaSpellCalc");
+
 Manager.eval = function(cmd) {
 	debugLog.log(cmd);
 	try {

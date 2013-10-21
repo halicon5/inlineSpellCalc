@@ -7,7 +7,7 @@
 
 	<script type="text/javascript" src="logger.js"></script>
 	<script type="text/javascript" src="sCalc.js"></script>
-
+	<script type="text/javascript" src="sCalcPrefs.js"></script>
 
 
 </head>
@@ -107,11 +107,14 @@ v.totalStrain = v.strainBASE + (v.EPOT * v.strainEPOT) + (v.targets * v.strainTA
 	</table>
 		function(targ, v, f, c, r)
 		
+
 		<input type='button' onclick="Manager.devStack.push (new sCalc('sCalcDisplay', 
+			'spellId' + (objCounter++),
 			document.getElementById('variables').value,
 			document.getElementById('formStruc').value,
 			document.getElementById('calculator').value,
 			document.getElementById('report').value,
+			sCalcUserData,
 			debugLog) );" value="add new object"/>
 	</div>
 
@@ -119,9 +122,10 @@ v.totalStrain = v.strainBASE + (v.EPOT * v.strainEPOT) + (v.targets * v.strainTA
 	<div id="sCalcDisplay"></div>
 
 
-	<div class='console'><pre id="debug_feedback"></pre></div>
 
+	<div class='console'><pre id="debug_feedback"></pre></div>
 	<script type="text/javascript" src="execute.js"></script>
+
 
 
 

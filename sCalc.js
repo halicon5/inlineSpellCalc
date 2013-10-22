@@ -1,4 +1,4 @@
-var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
+var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, logger) {
 	this.displayBox = document.getElementById(targ);
 	this.sCalcId = sCalcId;
 	this.elems = {};

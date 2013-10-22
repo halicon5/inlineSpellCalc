@@ -58,15 +58,38 @@ class SpellHTML {
 		$html .= self::get_row("Staging", $spell->staging, $temp->staging);
 		$html .= self::get_row("Resist", $spell->resist, $temp->resist);
 		
+		$html .= "<tr><td id=\"spell".$spell->id."\"></td></tr>"; 
+
 		$html .= self::get_row("Description", $spell->description);
 		$html .= self::get_row("Effect", $spell->effect, $temp->effect);
 		$html .= self::get_row("Limits", $spell->limits, $temp->limits);
 		$html .= self::get_row("Special", $spell->special, $temp->special);
 	
 		$html .= "</table>";
+
+		$html .= createSpellCalculator($spell, $temp);
+
 		return $html;
 	}
 
+	public static function createSpellCalculator(SpellTDO $spell, SpellTemplateTDO $temp) {
+		$html = "";
+
+		if ($temp->sCalcVars) {
+			$html .= "<script type='text/javascript'>";
+			$html .= "SCManager.spellStack.push(new sCalc('spell".$spell->id."', 
+				'spell".$spell->id."',
+				'".$temp->sCalcVars."',
+				'".$temp->sCalcForm."',
+				'".$temp->sCalcCalc."',
+				'".$temp->sCalcRep."',
+				'',
+				sCalcUserData);"
+			$html .= "</script>";
+		}
+
+		return $html;
+	}
 
 	/**
 	 *	If the $print_select flag is set, then checkboxes are displayed

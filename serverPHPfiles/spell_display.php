@@ -9,6 +9,15 @@ $ACTION_FLAG = false
 ?>
 <html>
 <head>
+<script type="text/javascript" src="spellCalc/sCalc.js"></script>
+<script type="text/javascript" src="spellCalc/sCalc.js"></script>
+<script type="text/javascript" src="spellCalc/sCalcPrefs.js"></script>
+<script type="text/javascript">
+	var sCalcUserData = new sCalcPrefs("kantiaSpellCalc");
+	var SCManager = {};
+	SCManager.spellStack = new Array();
+</script>
+<link rel="stylesheet" type="text/css" href="spellCalc/sCalc.css" />
 <title>Chronicles System: Spells</title>
 <?php
 	include_once($DIRECTORY_POSITION.$CLIENT_TEMPLATE."metatags.php");

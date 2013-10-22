@@ -4,6 +4,7 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 	this.elems = {};
 
 	this.variables = v;
+	this.templateVariables = tv;
 	this.formStruc = f;
 	this.calculator = c;
 	this.report = r;

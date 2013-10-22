@@ -32,6 +32,11 @@ class SpellTemplateTDO {
 	public $effect;
 	public $limits;
 	public $special;
+
+	public $sCalcVars;
+	public $sCalcForm;
+	public $sCalcCalc;
+	public $sCalcRep;
 	
 	public $last_mod;
 	public $notes;

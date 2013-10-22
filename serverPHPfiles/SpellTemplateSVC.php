@@ -57,6 +57,10 @@ class SpellTemplateSVC {
 		$theItem->last_mod = $_POST['tlast_mod'];
 		$theItem->keywords = $_POST['keywords'];
 		$theItem->is_active = $_POST['is_active'];
+		$theItem->sCalcVars = $_POST['tSCalcVars'];
+		$theItem->sCalcForm = $_POST['tSCalcForm'];
+		$theItem->sCalcCalc = $_POST['tSCalcCalc'];
+		$theItem->sCalcRep = $_POST['tSCalcRep'];
 		return $theItem;
 	}
 	

@@ -119,7 +119,11 @@ class SpellTemplateDAO_mysql implements ISpellTemplateDAO {
 					tlast_mod,
 					tnotes,
 					keywords,
-					is_active	)
+					is_active,
+					tSCalcVars,
+					tSCalcForm,
+					tSCalcCalc,
+					tSCalcRep )
 				VALUES 
 				(	'',
 					'$aData->name',
@@ -150,7 +154,11 @@ class SpellTemplateDAO_mysql implements ISpellTemplateDAO {
 					'$aData->last_mod',
 					'$aData->notes',
 					'$aData->keywords',
-					'$aData->is_active' )";
+					'$aData->is_active',
+					'$aData->sCalcVars',
+					'$aData->sCalcForm',
+					'$aData->sCalcCalc',
+					'$aData->sCalcRep' )";
 		$result = DBcon::Run_Query($sql);
 		$aData->id = mysql_insert_id();
 	}
@@ -183,6 +191,10 @@ class SpellTemplateDAO_mysql implements ISpellTemplateDAO {
 					teffect = '$aData->effect',
 					tlimits = '$aData->limits',
 					tspecial = '$aData->special',
+					tSCalcVars = '$aData->sCalcVars',
+					tSCalcForm = '$aData->sCalcForm',
+					tSCalcCalc = '$aData->sCalcCalc',
+					tSCalcRep = '$aData->sCalcRep',
 					tlast_mod= '".get_timestamp()."',
 					tnotes = '$aData->notes',
 					keywords = '".$aData->keywords."',
@@ -243,6 +255,10 @@ class SpellTemplateDAO_mysql implements ISpellTemplateDAO {
 		$theTemp->last_mod = $aData['tlast_mod'];
 		$theTemp->keywords = $aData['keywords'];
 		$theTemp->is_active	= $aData['is_active'];
+		$theTemp->sCalcVars = $aData['tSCalcVars'];
+		$theTemp->sCalcForm = $aData['tSCalcForm'];
+		$theTemp->sCalcCalc = $aData['tSCalcCalc'];
+		$theTemp->sCalcRep = $aData['tSCalcRep'];
 		
 		return $theTemp;
 	}

@@ -56,15 +56,17 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 	sCalc.prototype.updateUserPrefs = function(inpObj, inpDef) {
 		this.log ("CALL sCalc.prototype.updateUserPrefs = function(inpObj, inpDef)");
 
-		if (inpDef.map.substring(0,6) === "global" ) {
-			this.userPrefs.spellKeys["globalVar"][inpDef.map] = inpObj.value;
-		} else if (this.userPrefs.spellKeys[this.sCalcId] && usefulTypeOf(this.userPrefs.spellKeys[this.sCalcId]) === "[object Object]") {
-			this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = inpObj.value;
-		} else {
-			this.userPrefs.spellKeys[this.sCalcId] = {};
-			this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = inpObj.value;
+		if (inpDef.map) {
+			if (inpDef.map.substring(0,6) === "global" ) {
+				this.userPrefs.spellKeys["globalVar"][inpDef.map] = this.v[inpDef.map];
+			} else if (this.userPrefs.spellKeys[this.sCalcId] && usefulTypeOf(this.userPrefs.spellKeys[this.sCalcId]) === "[object Object]") {
+				this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = this.v[inpDef.map];
+			} else {
+				this.userPrefs.spellKeys[this.sCalcId] = {};
+				this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = this.v[inpDef.map];
+			}
+			this.userPrefs.saveData();
 		}
-		this.userPrefs.saveData();
 
 		this.log("FINISH sCalc.prototype.updateUserPrefs = function(inpObj, inpDef)");
 	}
@@ -133,7 +135,8 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 			tdH = createSuperElement("td", ["innerHTML",cellDef.label], ["class","spellCalcHead"], ["colspan", (cellDef.hCol) ? cellDef.hCol : 1]);
 			tdI = createSuperElement("td", ["colspan", (cellDef.fCol) ? cellDef.fCol : 1]);
 			inp = createSuperElement("input", 
-				["size",2], ["maxlength",4], 
+				["size", (cellDef.size) ? cellDef.size : 2 ],
+				["maxlength", (cellDef.maxlength) ? cellDef.maxlength : 4], 
 				["value", (this.v[cellDef.map]) ? this.v[cellDef.map] : 0 ],
 				["onchange", "this.SCobj.update(this); this.SCobj.updateUserPrefs(this, inpDef);"]);
 			inp.inpDef = cellDef;
@@ -151,12 +154,15 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 	sCalc.prototype.setUserDefault = function(inpObj) {
 		this.log("CALL sCalc.prototype.setUserDefault = function(cellDef)");
 
-		if ( this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map] ) {
-			inpObj.value = this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map];
-		} else if ( this.userPrefs.spellKeys[this.sCalcId] && this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map] ) {
-			inpObj.value = this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map];			
+		if (inpObj.inpDef && inpObj.inpDef.map) {
+			if ( this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map] ) {
+				inpObj.value = this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map];
+				this.v[inpObj.inpDef.map] = this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map];
+			} else if ( this.userPrefs.spellKeys[this.sCalcId] && this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map] ) {
+				inpObj.value = this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map];
+				this.v[inpObj.inpDef.map] = this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map];
+			}
 		}
-
 		this.log("FINISH sCalc.prototype.setUserDefault = function(cellDef)");
 	}
 

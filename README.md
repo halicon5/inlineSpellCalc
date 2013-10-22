@@ -8,10 +8,13 @@ Variables
 ---------
 
 Variables are simple JSON objects, nothing more than "key":value pairs.
+Global variables are used across multiple spells and are prefixed with the word "global".
 
 Example:
 
 		{
+			"globalDisciplineRank" : 0,
+
 			"stamMIN": 1,
 			"strainBASE": 4,
 			"strainEPOT": 3,
@@ -54,12 +57,15 @@ Forms
 Forms are defined as an Array of Arrays.  Each sub-array represents one row.
 Rows are objects with the followings attributes: {"map": "variableName", "label": "Label Text"}
 Optional attributes are "hCol" and "fCol" for the colspan of the header or form field. "inpType":"text" will allow non-numeric input.
+Size and maxlength fields are also available. Defaults are 2 and 4 but can be overridden.
+When a user updates a field the values are saved in local storage. Some variables, those preficed with the map value of "global" will prefill will with the most recent value input by the user across all spells that use that variable name.
 
 Sample Form Structure: 
 
 		[
 			[ {"map": "EPOT", "label": "# EPOT", "hCol": 2}, {"map": "targets", "label": "# of Targets"}],
-			[ {"map": "overpower", "label": "Overpower", "fCol":2}, { "map": "damageDiceType", "label": "Damage Die:", "inpType": "text"} ]
+			[ {"map": "overpower", "label": "Overpower", "fCol":2}, { "map": "damageDiceType", "label": "Damage Die:", "inpType": "text"} ],
+			[ {"map": "globalDisciplineRank", "label": "Discipline Rank", "size": 4, "maxlength": 10 } ]
 		]
 
 Calculations

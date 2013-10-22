@@ -4,6 +4,10 @@ var sCalcPrefs = function(storageName) {
     this.savePossible = true;
     this.saveCount = 0;
     this.initialize();
+
+    if (!this.spellKeys["globalVar"]) {
+        this.spellKeys["globalVar"] = {};
+    }
 };
 
     sCalcPrefs.prototype.initialize = function() {

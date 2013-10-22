@@ -28,6 +28,11 @@
 			<br />
 			Variables: <textarea id="variables" rows="10" cols="40">
 {
+	"globalDisciplineRank": 0,
+	"globalWILLrank": 10,
+	"globalWILLadj": 0,
+
+	"discpMIN": 0,
 	"stamMIN": 1,
 	"strainBASE": 4,
 	"strainEPOT": 3,
@@ -74,7 +79,8 @@
 			Form Structure: <textarea id="formStruc" rows="10" cols="40">
 [
 	[ {"map": "EPOT", "label": "# EPOT", "hCol": 2}, {"map": "targets", "label": "# of Targets"}],
-	[ {"map": "overpower", "label": "Overpower", "fCol":2}, { "map": "damageDiceType", "label": "Damage Die:", "inpType": "text"} ]
+	[ {"map": "overpower", "label": "Overpower", "fCol":2}, { "map": "damageDiceType", "label": "Damage Die:", "inpType": "text"} ],
+	[ {"map": "globalDisciplineRank", "label": "Discipline Rank"} ]
 ]
 		</textarea>
 		</td>

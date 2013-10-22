@@ -56,14 +56,15 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 	sCalc.prototype.updateUserPrefs = function(inpObj, inpDef) {
 		this.log ("CALL sCalc.prototype.updateUserPrefs = function(inpObj, inpDef)");
 
-		if (this.userPrefs.spellKeys[this.sCalcId] && usefulTypeOf(this.userPrefs.spellKeys[this.sCalcId]) === "[object Object]") {
+		if (inpDef.map.substring(0,6) === "global" ) {
+			this.userPrefs.spellKeys["globalVar"][inpDef.map] = inpObj.value;
+		} else if (this.userPrefs.spellKeys[this.sCalcId] && usefulTypeOf(this.userPrefs.spellKeys[this.sCalcId]) === "[object Object]") {
 			this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = inpObj.value;
-			this.userPrefs.saveData();
 		} else {
 			this.userPrefs.spellKeys[this.sCalcId] = {};
 			this.userPrefs.spellKeys[this.sCalcId][inpDef.map] = inpObj.value;
-			this.userPrefs.saveData();
 		}
+		this.userPrefs.saveData();
 
 		this.log("FINISH sCalc.prototype.updateUserPrefs = function(inpObj, inpDef)");
 	}
@@ -140,12 +141,24 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 			appendChildren(tdI,inp);
 
 			appendChildren(row, tdH,tdI);
+
+			this.setUserDefault( inp );
 		}
 		this.log("FINISH sCalc.prototype.buildFormCell = function(cellDef, row)");
 	}
 
 
+	sCalc.prototype.setUserDefault = function(inpObj) {
+		this.log("CALL sCalc.prototype.setUserDefault = function(cellDef)");
 
+		if ( this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map] ) {
+			inpObj.value = this.userPrefs.spellKeys["globalVar"][inpObj.inpDef.map];
+		} else if ( this.userPrefs.spellKeys[this.sCalcId] && this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map] ) {
+			inpObj.value = this.userPrefs.spellKeys[this.sCalcId][inpObj.inpDef.map];			
+		}
+
+		this.log("FINISH sCalc.prototype.setUserDefault = function(cellDef)");
+	}
 
 
 
@@ -245,6 +258,27 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 		this.log("FINISH sCalc.prototype.concatDynamicSpans = function(textDef, cell)");
 	}
 
+	sCalc.prototype.calc_adjust = function(rank, limit) {
+		this.log("CALL sCalc.prototype.calc_adjust = function(rank, limit)");
+
+		limit = (isNaN(limit)) ? 100 : parseInt(limit);
+		var adj = 0;
+		if (!isNaN(rank)) {
+			if ( rank > 10) {
+				adj = (parseInt(rank) - 10) * 2;
+				adj = (adj > limit) ? limit : adj;
+				return adj;
+			} else {
+				for (var i = rank - 10; i < 0; i++) {
+					adj = adj + i;
+				}
+				return adj;
+			}
+		} else {
+			return 0;
+		}
+	}
+
 
 	sCalc.prototype.log = function(msg) {
 		if (this.logger && this.logger.log) {
@@ -266,6 +300,8 @@ var sCalc = function(targ, sCalcId, v, f, c, r, userPrefs, logger) {
 		}
 	}
 	
+
+
 
 
 	

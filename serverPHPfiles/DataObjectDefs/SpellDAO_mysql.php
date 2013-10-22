@@ -326,7 +326,11 @@ class SpellDAO_mysql {
 					last_mod,
 					notes,
 					keywords,
-					is_active )
+					is_active,
+					sCalcVars,
+					sCalcForm,
+					sCalcCalc,
+					sCalcRep )
 				VALUES
 				(	'',
 					'".$aData->name."',
@@ -359,7 +363,11 @@ class SpellDAO_mysql {
 					'".get_timestamp()."',
 					'".$aData->notes."',
 					'".$aData->keywords."',
-					'".$aData->is_active."'
+					'".$aData->is_active."',
+					'$aData->sCalcVars',
+					'$aData->sCalcForm',
+					'$aData->sCalcCalc',
+					'$aData->sCalcRep'
 				)";
 				
 		$result = DBcon::Run_Query($sql);
@@ -403,6 +411,12 @@ class SpellDAO_mysql {
 					effect		= '".$aData->effect."',
 					limits		= '".$aData->limits."',
 					special		= '".$aData->special."',
+
+					sCalcVars = '$aData->sCalcVars',
+					sCalcForm = '$aData->sCalcForm',
+					sCalcCalc = '$aData->sCalcCalc',
+					sCalcRep = '$aData->sCalcRep',
+
 
 					last_mod	= '".get_timestamp()."',
 					keywords	= '".$aData->keywords."',
@@ -466,6 +480,11 @@ class SpellDAO_mysql {
 		$theRecord->effect	=	$aData['effect'];
 		$theRecord->limits	=	$aData['limits'];
 		$theRecord->special	=	$aData['special'];
+
+		$theRecord->sCalcVars = $aData['sCalcVars'];
+		$theRecord->sCalcForm = $aData['sCalcForm'];
+		$theRecord->sCalcCalc = $aData['sCalcCalc'];
+		$theRecord->sCalcRep = $aData['sCalcRep'];
 		
 		$theRecord->last_mod	=	$aData['last_mod'];
 		$theRecord->notes	=	$aData['notes'];

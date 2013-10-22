@@ -88,6 +88,12 @@ class SpellSVC {
 		$theItem->keywords = $_POST['keywords'];
 		$theItem->notes = $_POST['notes'];
 		$theItem->is_active = $_POST['is_active'];
+
+		$theItem->sCalcVars = $_POST['sCalcVars'];
+		$theItem->sCalcForm = $_POST['sCalcForm'];
+		$theItem->sCalcCalc = $_POST['sCalcCalc'];
+		$theItem->sCalcRep = $_POST['sCalcRep'];
+
 		
 
 		return $theItem;

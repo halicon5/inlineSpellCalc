@@ -43,6 +43,13 @@ $form->textbox("Effect",		"effect",		$theData->effect,		90, 8);
 $form->textbox("Limits",		"limits",		$theData->limits,		90, 8);
 $form->textbox("Special",		"special",		$theData->special,		90, 6);
 $form->hidden("last_mod",	get_timestamp() );
+
+$form->textbox("sCalc Variables",	"sCalcVars",	$theData->sCalcVars,	90, 8);
+$form->textbox("sCalc Form Def",	"sCalcForm",	$theData->sCalcForm,	90, 8);
+$form->textbox("sCalc Calculation",	"sCalcCalc",	$theData->sCalcCalc,	90, 8);
+$form->textbox("sCalc Report Def",	"sCalcRep",		$theData->sCalcRep,		90, 8); 
+
+
 $form->textbox("Notes",			"notes",		$theData->notes,		60, 2);
 
 $form->is_active($theData->is_active);

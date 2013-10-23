@@ -309,7 +309,7 @@ class SpellDAO_mysql {
 					aoe_tav,
 					targ,
 					targ_tav,
-					range,
+					`range`,
 					range_tav,
 					dur,
 					dur_tav,
@@ -364,12 +364,13 @@ class SpellDAO_mysql {
 					'".$aData->notes."',
 					'".$aData->keywords."',
 					'".$aData->is_active."',
-					'$aData->sCalcVars',
-					'$aData->sCalcForm',
-					'$aData->sCalcCalc',
-					'$aData->sCalcRep'
+					'".$aData->sCalcVars."',
+					'".$aData->sCalcForm."',
+					'".$aData->sCalcCalc."',
+					'".$aData->sCalcRep."'
 				)";
-				
+
+		echo $sql;
 		$result = DBcon::Run_Query($sql);
 		$aData->id = mysql_insert_id();
 		SearchTools::index_spell($aData);
@@ -394,7 +395,7 @@ class SpellDAO_mysql {
 					aoe_tav		= '".$aData->aoe_tav."',
 					targ		= '".$aData->targ."',
 					targ_tav	= '".$aData->targ_tav."',
-					range		= '".$aData->range."',
+					`range`		= '".$aData->range."',
 					range_tav	= '".$aData->range_tav."',
 					dur			= '".$aData->dur."',
 					dur_tav		= '".$aData->dur_tav."',
@@ -412,11 +413,10 @@ class SpellDAO_mysql {
 					limits		= '".$aData->limits."',
 					special		= '".$aData->special."',
 
-					sCalcVars = '$aData->sCalcVars',
-					sCalcForm = '$aData->sCalcForm',
-					sCalcCalc = '$aData->sCalcCalc',
-					sCalcRep = '$aData->sCalcRep',
-
+					sCalcVars = '".$aData->sCalcVars."',
+					sCalcForm = '".$aData->sCalcForm."',
+					sCalcCalc = '".$aData->sCalcCalc."',
+					sCalcRep = '".$aData->sCalcRep."',
 
 					last_mod	= '".get_timestamp()."',
 					keywords	= '".$aData->keywords."',
@@ -424,7 +424,7 @@ class SpellDAO_mysql {
 					is_active	= '".$aData->is_active."'
 				WHERE spell_id = '".$aData->id."'
 				";
-
+echo $sql;
 		$result = DBcon::Run_Query($sql);
 		SearchTools::index_spell($aData);
 	}

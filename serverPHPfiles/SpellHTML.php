@@ -76,15 +76,21 @@ class SpellHTML {
 	public static function createSpellCalculator(SpellTDO $spell, SpellTemplateTDO $temp) {
 		$html = "";
 
-		if ($temp->sCalcVars) {
+		$tempVars = ($temp->sCalcVars) ? base64_encode($temp->sCalcVars) : "";
+		$calcForm = ($spell->sCalcForm) ? base64_encode($spell->sCalcForm) : base64_encode($temp->sCalcForm);
+		$calcCalc = ($spell->sCalcCalc) ? base64_encode($spell->sCalcCalc) : base64_encode($temp->sCalcCalc);
+		$calcRep = ($spell->sCalcRep) ? base64_encode($spell->sCalcRep) : base64_encode($temp->sCalcRep);
+		$overRideVars = ($spell->sCalcVars) ? base64_encode($spell->sCalcVars) : "";
+
+		if ($temp->sCalcVars || $spell->sCalcVars) {
 			$html .= "<script type='text/javascript'>";
 			$html .= "SCManager.spellStack.push(new sCalc('spell".$spell->id."', 
 				'spell".$spell->id."',
-				atob('".base64_encode($temp->sCalcVars)."'),
-				atob('".base64_encode($temp->sCalcForm)."'),
-				atob('".base64_encode($temp->sCalcCalc)."'),
-				atob('".base64_encode($temp->sCalcRep)."'),
-				'',
+				atob('".$tempVars."'),
+				atob('".$calcForm."'),
+				atob('".$calcCalc."'),
+				atob('".$calcRep."'),
+				atob('".$overRideVars."'),
 				sCalcUserData,
 				'horiz'));";
 			$html .= "</script>";

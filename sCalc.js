@@ -1,12 +1,12 @@
-var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, horiz, logger) {
+var sCalc = function(targ, sCalcId, defv, f, c, r, tovr, userPrefs, horiz, logger) {
 	this.displayBox = document.getElementById(targ);
 	this.sCalcId = sCalcId;
 	this.elems = {};
 
 	this.layout = (horiz !== "horiz") ? "vert" : "horiz";
 
-	this.variables = v;
-	this.templateVariables = tv;
+	this.defVariables = defv;
+	this.templateVarOverrides = tovr;
 	this.formStruc = f;
 	this.calculator = c;
 	this.report = r;
@@ -26,15 +26,29 @@ var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, horiz, logger) {
 
 	sCalc.prototype.initialize = function() {
 		this.log("CALL sCalc.prototype.initialize = function()");
-		this.v = JSON.parse(this.variables);
+		this.v = JSON.parse(this.defVariables);
 		this.f = JSON.parse(this.formStruc);
 		this.r = JSON.parse(this.report);
 
+		if (this.templateVarOverrides) {
+			this.tovr = JSON.parse(this.templateVarOverrides);
+		} else {
+			this.tovr = {};
+		}
+		this.templateOveride();
 		this.setLayout();
 		this.buildForm();
 		this.buildReport();
 		this.update();
 		this.log("FINISH sCalc.prototype.initialize = function()");
+	}
+
+	sCalc.prototype.templateOveride = function() {
+		if (usefulTypeOf(this.tovr) === "[object Object]") {
+			for (var key in this.tovr) {
+				this.v[key] = this.tovr[key];
+			}
+		}
 	}
 
 	sCalc.prototype.setLayout = function() {

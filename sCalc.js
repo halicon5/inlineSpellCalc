@@ -1,7 +1,9 @@
-var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, logger) {
+var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, horiz, logger) {
 	this.displayBox = document.getElementById(targ);
 	this.sCalcId = sCalcId;
 	this.elems = {};
+
+	this.layout = (horiz !== "horiz") ? "vert" : "horiz";
 
 	this.variables = v;
 	this.templateVariables = tv;
@@ -20,7 +22,7 @@ var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, logger) {
 	this.initialize();
 
 }
-
+	
 
 	sCalc.prototype.initialize = function() {
 		this.log("CALL sCalc.prototype.initialize = function()");
@@ -28,12 +30,37 @@ var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, logger) {
 		this.f = JSON.parse(this.formStruc);
 		this.r = JSON.parse(this.report);
 
+		this.setLayout();
 		this.buildForm();
 		this.buildReport();
 		this.update();
 		this.log("FINISH sCalc.prototype.initialize = function()");
 	}
 
+	sCalc.prototype.setLayout = function() {
+		var layoutTable = createSuperElement("table", ["class","spellCalcFormReport"]);
+		if (this.layout === "horiz") {
+			var tr = createSuperElement("tr");
+			var formTD = createSuperElement("td");
+			var repTD = createSuperElement("td");
+			appendChildren(this.displayBox, layoutTable);
+			appendChildren(layoutTable, tr);
+			appendChildren(tr,formTD,repTD);
+			this.elems.formTD= formTD;
+			this.elems.repTD=repTD;
+		} else {
+			var tr1 = createSuperElement("tr");
+			var tr2 = createSuperElement("tr");
+			var formTD = createSuperElement("td");
+			var repTD = createSuperElement("td");
+			appendChildren(this.displayBox, layoutTable);
+			appendChildren(layoutTable, tr1, tr2);
+			appendChildren(tr1,formTD);
+			appendChildren(tr2,formTD);
+			this.elems.formTD= formTD;
+			this.elems.repTD=repTD;			
+		}
+	}
 
 	sCalc.prototype.update = function(inputObj) {
 		this.log ("CALL sCalc.prototype.update = function(inputObj, inpDef)");
@@ -92,10 +119,9 @@ var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, logger) {
 
 	sCalc.prototype.buildForm = function() {
 		this.log("CALL sCalc.prototype.buildForm = function()");
-		var formBox = createSuperElement("div", ["class", "spellCalcForm"], ["innerHTML", "Form Box"]);
-		this.elems.formBox = formBox;
+		var formBox = createSuperElement("div", ["class", "spellCalcForm"]);
 
-		appendChildren(this.displayBox,formBox);
+		appendChildren(this.elems.formTD,formBox);
 
 		if (usefulTypeOf(this.f) === "[object Array]") {
 			var formTable = createSuperElement("table", ["class", "spellCalcForm"]);
@@ -171,10 +197,9 @@ var sCalc = function(targ, sCalcId, v, f, c, r, tv, userPrefs, logger) {
 
 	sCalc.prototype.buildReport = function() {
 		this.log("CALL sCalc.prototype.buildReport = function()");
-		var repBox = createSuperElement("div", ["class", "spellCalcRep"], ["innerHTML","Report Box"])
-		this.elems.repBox = repBox;
+		var repBox = createSuperElement("div", ["class", "spellCalcRep"]);
 
-		appendChildren(this.displayBox,repBox);
+		appendChildren(this.elems.repTD,repBox);
 
 		if (usefulTypeOf(this.r) === "[object Array]") {
 			var repTable = createSuperElement("table", ["class", "spellCalcRep"]);

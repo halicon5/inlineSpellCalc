@@ -58,7 +58,7 @@ class SpellHTML {
 		$html .= self::get_row("Staging", $spell->staging, $temp->staging);
 		$html .= self::get_row("Resist", $spell->resist, $temp->resist);
 		
-		$html .= "<tr><td id=\"spell".$spell->id."\"></td></tr>"; 
+		$html .= "<tr><td id=\"spell".$spell->id."\" colspan=\"4\"></td></tr>"; 
 
 		$html .= self::get_row("Description", $spell->description);
 		$html .= self::get_row("Effect", $spell->effect, $temp->effect);
@@ -67,10 +67,11 @@ class SpellHTML {
 	
 		$html .= "</table>";
 
-		$html .= createSpellCalculator($spell, $temp);
+		$html .= self::createSpellCalculator($spell, $temp);
 
 		return $html;
 	}
+
 
 	public static function createSpellCalculator(SpellTDO $spell, SpellTemplateTDO $temp) {
 		$html = "";
@@ -79,17 +80,19 @@ class SpellHTML {
 			$html .= "<script type='text/javascript'>";
 			$html .= "SCManager.spellStack.push(new sCalc('spell".$spell->id."', 
 				'spell".$spell->id."',
-				'".$temp->sCalcVars."',
-				'".$temp->sCalcForm."',
-				'".$temp->sCalcCalc."',
-				'".$temp->sCalcRep."',
+				atob('".base64_encode($temp->sCalcVars)."'),
+				atob('".base64_encode($temp->sCalcForm)."'),
+				atob('".base64_encode($temp->sCalcCalc)."'),
+				atob('".base64_encode($temp->sCalcRep)."'),
 				'',
-				sCalcUserData);"
+				sCalcUserData,
+				'horiz'));";
 			$html .= "</script>";
 		}
 
 		return $html;
 	}
+
 
 	/**
 	 *	If the $print_select flag is set, then checkboxes are displayed

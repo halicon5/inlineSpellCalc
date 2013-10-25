@@ -78,10 +78,10 @@ class SpellHTML {
 
 		$tempVars = ($temp->sCalcVars) ? base64_encode($temp->sCalcVars) : "";
 		$calcForm = ($spell->sCalcForm) ? base64_encode($spell->sCalcForm) : base64_encode($temp->sCalcForm);
-		$calcCalc = ($spell->sCalcCalc) ? base64_encode($spell->sCalcCalc) : base64_encode($temp->sCalcCalc);
+		$calcCalc = ($temp->sCalcCalc) ? base64_encode($temp->sCalcCalc) : base64_encode("");
 		$calcRep = ($spell->sCalcRep) ? base64_encode($spell->sCalcRep) : base64_encode($temp->sCalcRep);
 		$overRideVars = ($spell->sCalcVars) ? base64_encode($spell->sCalcVars) : "";
-
+		$overRideCalc = ($spell->sCalcCalc) ? base64_encode($spell->sCalcCalc) : base64_encode("");
 		if ($temp->sCalcVars || $spell->sCalcVars) {
 			$html .= "<script type='text/javascript'>";
 			$html .= "SCManager.spellStack.push(new sCalc('spell".$spell->id."', 
@@ -91,6 +91,7 @@ class SpellHTML {
 				atob('".$calcCalc."'),
 				atob('".$calcRep."'),
 				atob('".$overRideVars."'),
+				atob('".$overRideCalc."'),
 				sCalcUserData,
 				'horiz'));";
 			$html .= "</script>";

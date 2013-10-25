@@ -1,4 +1,4 @@
-var sCalc = function(targ, sCalcId, defv, f, c, r, tovr, userPrefs, horiz, logger) {
+var sCalc = function(targ, sCalcId, defv, f, c, r, tovr, tovrCalc, userPrefs, horiz, logger) {
 	this.displayBox = document.getElementById(targ);
 	this.sCalcId = sCalcId;
 	this.elems = {};
@@ -9,6 +9,7 @@ var sCalc = function(targ, sCalcId, defv, f, c, r, tovr, userPrefs, horiz, logge
 	this.templateVarOverrides = tovr;
 	this.formStruc = f;
 	this.calculator = c;
+	this.templateCalcOverride = tovrCalc;
 	this.report = r;
 
 	this.reportFields = {};
@@ -121,12 +122,36 @@ var sCalc = function(targ, sCalcId, defv, f, c, r, tovr, userPrefs, horiz, logge
 
 	sCalc.prototype.calculate = function() {
 		this.log("CALL sCalc.prototype.calculate = function() ");
-		try {
-			eval ("var v = this.v; " + this.calculator);
-		} 
-		catch (exception) {
-			alert(exception);
+		if (this.v.OVERRIDETEMPLATE && this.templateCalcOverride) {
+			// run the local spell override only
+			try {
+				eval ("var v = this.v; " + this.templateCalcOverride);
+			} 
+			catch (exception) {
+				alert(exception);
+			}			
+		} else {
+			// run the template
+			if (this.calculator) {
+				try {
+					eval ("var v = this.v; " + this.calculator);
+				} 
+				catch (exception) {
+					alert(exception);
+				}
+			}
+
+			// run local spell calculations as supplemental calculations
+			if (this.templateCalcOverride) {
+				try {
+					eval ("var v = this.v; " + this.templateCalcOverride);
+				} 
+				catch (exception) {
+					alert(exception);
+				}
+			}
 		}
+
 		this.log("FINISH sCalc.prototype.calculate = function() ");
 	}
 

@@ -78,6 +78,10 @@ Sample Calculation:
 		v.totalTAV = v.diffBASE + (v.EPOT * v.diffEPOT) + (v.targets * v.diffTARG);
 		v.totalStrain = v.strainBASE + (v.EPOT * v.strainEPOT) + (v.targets * v.strainTARG);
 
+If the following variable is present, the system will default to a local spell calculation instead.
+		
+		OVERRIDETEMPLATE: 1
+
 Reports
 -------
 
